@@ -26,11 +26,13 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_i2c_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h \
+ ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart.h \
  ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h \
  ../Core/Inc/FreeRTOSConfig.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/projdefs.h \
@@ -40,7 +42,20 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
  ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h \
- ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/task.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h \
+ ../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h \
+ ../Core/Inc/iis2dh.h ../Core/Inc/iis2dh_reg.h \
+ ../Drivers/BSP/Components/iis2mdc/iis2mdc.h \
+ ../Drivers/BSP/Components/iis2mdc/iis2mdc_reg.h \
+ ../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_bus.h \
+ ../Core/Inc/steval_stwinkt1_conf.h \
+ ../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_errno.h \
+ ../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_errno.h
 
 ../Core/Inc/main.h:
 
@@ -98,6 +113,10 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_pwr_ex.h:
 
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi.h:
+
+../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_spi_ex.h:
+
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim.h:
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_tim_ex.h:
@@ -106,7 +125,7 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Drivers/STM32L4xx_HAL_Driver/Inc/stm32l4xx_hal_uart_ex.h:
 
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os.h:
+../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS/cmsis_os.h:
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h:
 
@@ -126,4 +145,32 @@ Core/Src/main.o: ../Core/Src/main.c ../Core/Inc/main.h \
 
 ../Middlewares/Third_Party/FreeRTOS/Source/include/list.h:
 
-../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2/cmsis_os2.h:
+../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/task.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/semphr.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/queue.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/event_groups.h:
+
+../Middlewares/Third_Party/FreeRTOS/Source/include/timers.h:
+
+../Core/Inc/iis2dh.h:
+
+../Core/Inc/iis2dh_reg.h:
+
+../Drivers/BSP/Components/iis2mdc/iis2mdc.h:
+
+../Drivers/BSP/Components/iis2mdc/iis2mdc_reg.h:
+
+../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_bus.h:
+
+../Core/Inc/steval_stwinkt1_conf.h:
+
+../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_errno.h:
+
+../Drivers/BSP/STEVAL-STWINKT1/steval_stwinkt1_errno.h:
