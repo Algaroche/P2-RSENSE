@@ -71,8 +71,6 @@ uint8_t Inicio=0;
 
 uint8_t SPI3InitCounter = 0;
 
-osPoolId amicPool_id;
-osPoolDef(amicPool, 1, uint32_t);
 
 /* USER CODE END PV */
 
