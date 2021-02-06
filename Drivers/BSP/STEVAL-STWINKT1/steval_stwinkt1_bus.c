@@ -517,7 +517,7 @@ __weak HAL_StatusTypeDef MX_I2C2_Init(I2C_HandleTypeDef* hi2c)
 {
   HAL_StatusTypeDef ret = HAL_OK;
   hi2c->Instance = I2C2;
-  hi2c->Init.Timing = 0x00909BEB;
+  hi2c->Init.Timing = 0x307075B1;
   hi2c->Init.OwnAddress1 = 0;
   hi2c->Init.AddressingMode = I2C_ADDRESSINGMODE_7BIT;
   hi2c->Init.DualAddressMode = I2C_DUALADDRESS_DISABLE;

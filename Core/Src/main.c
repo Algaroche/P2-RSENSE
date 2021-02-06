@@ -53,8 +53,8 @@ UART_HandleTypeDef huart2;
 osThreadId Task1Handle;
 osThreadId Task2Handle;
 osThreadId Task3Handle;
-osMessageQId ColaAccHandle;
 osSemaphoreId SemaforoLEDHandle;
+osSemaphoreId SemaforoUARTHandle;
 /* USER CODE BEGIN PV */
 IIS2DH_Object_t acc_Obj;
 IIS2DH_IO_t acc_IO;
@@ -70,6 +70,9 @@ IIS2MDC_Axes_t magneto_axes;
 uint8_t Inicio=0;
 
 uint8_t SPI3InitCounter = 0;
+
+osPoolId amicPool_id;
+osPoolDef(amicPool, 1, uint32_t);
 
 /* USER CODE END PV */
 
@@ -149,6 +152,10 @@ int main(void)
   osSemaphoreDef(SemaforoLED);
   SemaforoLEDHandle = osSemaphoreCreate(osSemaphore(SemaforoLED), 1);
 
+  /* definition and creation of SemaforoUART */
+  osSemaphoreDef(SemaforoUART);
+  SemaforoUARTHandle = osSemaphoreCreate(osSemaphore(SemaforoUART), 1);
+
   /* USER CODE BEGIN RTOS_SEMAPHORES */
 	/* add semaphores, ... */
   /* USER CODE END RTOS_SEMAPHORES */
@@ -157,18 +164,13 @@ int main(void)
 	/* start timers, add new ones, ... */
   /* USER CODE END RTOS_TIMERS */
 
-  /* Create the queue(s) */
-  /* definition and creation of ColaAcc */
-  osMessageQDef(ColaAcc, 16, uint16_t);
-  ColaAccHandle = osMessageCreate(osMessageQ(ColaAcc), NULL);
-
   /* USER CODE BEGIN RTOS_QUEUES */
 	/* add queues, ... */
   /* USER CODE END RTOS_QUEUES */
 
   /* Create the thread(s) */
   /* definition and creation of Task1 */
-  osThreadDef(Task1, LED_blink, osPriorityAboveNormal, 0, 128);
+  osThreadDef(Task1, LED_blink, osPriorityNormal, 0, 128);
   Task1Handle = osThreadCreate(osThread(Task1), NULL);
 
   /* definition and creation of Task2 */
@@ -176,7 +178,7 @@ int main(void)
   Task2Handle = osThreadCreate(osThread(Task2), NULL);
 
   /* definition and creation of Task3 */
-  osThreadDef(Task3, MandaDatos, osPriorityNormal, 0, 128);
+  osThreadDef(Task3, MandaDatos, osPriorityLow, 0, 128);
   Task3Handle = osThreadCreate(osThread(Task3), NULL);
 
   /* USER CODE BEGIN RTOS_THREADS */
@@ -210,7 +212,7 @@ void SystemClock_Config(void)
 
   /** Configure the main internal regulator output voltage
   */
-  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1) != HAL_OK)
+  if (HAL_PWREx_ControlVoltageScaling(PWR_REGULATOR_VOLTAGE_SCALE1_BOOST) != HAL_OK)
   {
     Error_Handler();
   }
@@ -223,7 +225,7 @@ void SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   RCC_OscInitStruct.PLL.PLLM = 2;
-  RCC_OscInitStruct.PLL.PLLN = 10;
+  RCC_OscInitStruct.PLL.PLLN = 30;
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = RCC_PLLQ_DIV2;
   RCC_OscInitStruct.PLL.PLLR = RCC_PLLR_DIV2;
@@ -240,7 +242,7 @@ void SystemClock_Config(void)
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV1;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
 
-  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+  if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5) != HAL_OK)
   {
     Error_Handler();
   }
@@ -856,12 +858,15 @@ void MuestreaAcc(void const * argument)
 	{
 		IIS2MDC_MAG_GetAxes(&magneto_sensor, &magneto_axes);
 		buffer[Inicio] = ((magneto_axes.x));
-		buffer[Inicio++] = ((magneto_axes.y));
-		buffer[Inicio++] = ((magneto_axes.z));
+		Inicio++;
+		buffer[Inicio] = ((magneto_axes.y));
+		Inicio++;
+		buffer[Inicio] = ((magneto_axes.z));
 		Inicio++;
 		if (Inicio/3 == 10)
 		{
-			osMessagePut(ColaAccHandle, (uint32_t)(buffer), osWaitForever);
+			osSemaphoreRelease(SemaforoUARTHandle);
+
 			Inicio = 0;
 		}
 
@@ -884,9 +889,8 @@ void MandaDatos(void const * argument)
 	/* Infinite loop */
 	for(;;)
 	{
-		evt = osMessageGet(ColaAccHandle, osWaitForever);
-		void * data_ptr = evt.value.p;
-		HAL_UART_Transmit(&huart2, (uint8_t)data_ptr, 30, HAL_MAX_DELAY);
+		osSemaphoreWait(SemaforoUARTHandle,  osWaitForever);
+		HAL_UART_Transmit(&huart2, &buffer, sizeof(buffer), HAL_MAX_DELAY);
 		osSemaphoreRelease(SemaforoLEDHandle);
 		osDelay(1);
 	}
